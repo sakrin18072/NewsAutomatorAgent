@@ -30,7 +30,7 @@ def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size:
     Returns:
         Path to created image
     """
-    bg_colors=["#F04A00", "#F6DE16", "#5E5CB2", "#94D2BD", "#E9D8A6","#BDB76B","#8FBC8B","#FFF8DC","#FFFFFF","#FFFAFA","#F0FFF0","#F5FFFA","#F0FFFF","#F0F8FF","#F8F8FF","#F5F5F5","#FFF0F5","#FFE4E1"]
+    bg_colors=["#F04A00", "#F6DE16", "#5E5CB2", "#94D2BD", "#E9D8A6","#BDB76B","#8FBC8B","#FFF8DC","#FFFFFF","#FFFAFA","#F0FFF0","#F5FFFA","#F0FFFF","#F0F8FF","#F8F8FF","#F5F5F5","#FFF0F5","#FFE4E1","#E1AFD1","#A7D7C5","#ADA2FF","#8E9775","#FFE1FF"]
     image_bg = random.choice(bg_colors)
     img = Image.new("RGB", post_size, color=image_bg)
     draw = ImageDraw.Draw(img)
