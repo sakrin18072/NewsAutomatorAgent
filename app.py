@@ -37,7 +37,7 @@ def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size:
     points = news_summary.split('\n')
     
     try:
-        fonts = ['Lexend.ttf','Federo.ttf','IBMPlexMono.ttf','Montserrat.ttf','RobotoSlab.ttf','SourceSans3.ttf']
+        fonts = ['Lexend.ttf','Federo.ttf','IBMPlexMono.ttf','Montserrat.ttf','RobotoSlab.ttf','SourceSans3.ttf','AbrilFatFace.ttf','Alata.ttf','AmaticSC.ttf','MontserratAlternates.ttf','Righteous.ttf','Rowdies.ttf','ShadowsIntoLight.ttf','Unbounded.ttf']
         font_path = random.choice(fonts)
         font = ImageFont.truetype(font_path, font_size)
     except OSError:
