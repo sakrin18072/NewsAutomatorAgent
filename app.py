@@ -118,7 +118,7 @@ def upload_image_to_supabase(image_path: str):
 def fetch_news():
     """ Extracts latest Indian news from moneycontrol website and returns string of news content extracted"""
     try:
-        loader = WebBaseLoader("https://www.livemint.com/latest-news") 
+        loader = WebBaseLoader("https://www.livemint.com/news/india") 
         docs = loader.load()
         return docs[0].page_content
     except Exception as e:
