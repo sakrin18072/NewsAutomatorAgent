@@ -21,7 +21,7 @@ class AgentState(TypedDict):
 
 
 @tool 
-def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size: int = 40, text_color: str = "black", padding: int = 60, line_spacing: float = 1.5, max_text_width: int = 960, post_size: tuple = (1080, 1350)):
+def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size: int = 30, text_color: str = "black", padding: int = 60, line_spacing: float = 1.5, max_text_width: int = 1020, post_size: tuple = (1080, 1350)):
     """
     Helps in creating an image to post on instagram by passing the text in the post
     Args:
@@ -30,11 +30,11 @@ def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size:
     Returns:
         Path to created image
     """
-    bg_colors=["#F04A00", "#F6DE16", "#E6E6FA", "#94D2BD", "#E9D8A6"]
+    bg_colors=["#F04A00", "#F6DE16", "#5E5CB2", "#94D2BD", "#E9D8A6"]
     image_bg = random.choice(bg_colors)
     img = Image.new("RGB", post_size, color=image_bg)
     draw = ImageDraw.Draw(img)
-    
+    points = news_summary.split('\n')
     
     try:
         font = ImageFont.truetype(font_path, font_size)
@@ -46,7 +46,11 @@ def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size:
     dummy_draw = ImageDraw.Draw(dummy_img)
     avg_char_width = sum(dummy_draw.textlength(c, font=font) for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ") / 26
     max_chars_per_line = max_text_width // avg_char_width
-    lines = textwrap.wrap(news_summary, width=int(max_chars_per_line))
+    lines = []
+    
+    for i in points:
+        lines.extend(textwrap.wrap(i,width=int(max_chars_per_line)))
+        lines.extend([''])
 
     base_line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
     line_height = int(base_line_height * line_spacing)
@@ -54,6 +58,7 @@ def make_post_image(news_summary: str, font_path: str = "Lexend.ttf", font_size:
     y = padding
     lines.insert(0,"Headlines: ")
     lines.insert(1,"")
+    
     lines.append("")
     lines.append('-thenewsguybot')
     y += line_height
@@ -172,7 +177,7 @@ def journalist_agent(state: AgentState) -> AgentState:
     system_prompt = SystemMessage(content="""
     You are a journalist who posts news on instagram. You must call tools one at a time in the correct sequence:
     1. First call fetch_news() to get the latest news
-    2. Then analyze the news and create a 120-word summary
+    2. Then analyze the news and create a 5 point plain text summary 
     3. Call make_post_image() with the actual summary text
     4. Call upload_image_to_supabase() with the actual image path returned from make_post_image
     5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_image_to_supabase
@@ -232,7 +237,7 @@ def run_agent():
     """Helper function to run the agent with better error handling"""
     try:
         response = agent.invoke({
-            "messages": [HumanMessage(content="""Summarize the most latest news from internet into 120 words summary. 
+            "messages": [HumanMessage(content="""Summarize the most latest news from internet into 5 point wise plain text summary. 
                                             Create an image with the summary generated. 
                                             Upload that image to supabase.
                                             Use the supabase public url to upload the image to instagram.
