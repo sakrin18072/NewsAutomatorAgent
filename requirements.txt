@@ -1,0 +1,9 @@
+langgraph
+langchain-community
+langchain-core
+langchain-groq
+pillow
+supabase
+python-dotenv
+requests
+beautifulsoup4
