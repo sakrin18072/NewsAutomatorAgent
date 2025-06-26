@@ -128,7 +128,7 @@ def create_container_for_post(image_url: str):
     if not instagram_id or not instagram_access_token:
         raise ValueError("INSTAGRAM_ID and INSTAGRAM_ACCESS_TOKEN must be set in environment variables")
     
-    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines %23telugunews %23telugumemes&access_token={instagram_access_token}"
+    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines %23news %23indiannews&access_token={instagram_access_token}"
     res = requests.post(url)
     data = res.json()
     
