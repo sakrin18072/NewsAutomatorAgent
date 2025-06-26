@@ -30,4 +30,5 @@ jobs:
         SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         INSTAGRAM_ID: ${{ secrets.INSTAGRAM_ID }}
         INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        NEWS_SOURCE: ${{ secrets.NEWS_SOURCE }}
       run: python app.py
