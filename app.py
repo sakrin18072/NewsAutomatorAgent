@@ -177,7 +177,7 @@ def journalist_agent(state: AgentState) -> AgentState:
     system_prompt = SystemMessage(content="""
     You are a journalist who posts news on instagram. You must call tools one at a time in the correct sequence:
     1. First call fetch_news() to get the latest news
-    2. Then analyze the news and create a 5 point plain text summary 
+    2. Then analyze the news and create a 8 point plain text summary 
     3. Call make_post_image() with the actual summary text
     4. Call upload_image_to_supabase() with the actual image path returned from make_post_image
     5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_image_to_supabase
@@ -237,7 +237,7 @@ def run_agent():
     """Helper function to run the agent with better error handling"""
     try:
         response = agent.invoke({
-            "messages": [HumanMessage(content="""Summarize the most latest news from internet into 5 point wise plain text summary. 
+            "messages": [HumanMessage(content="""Summarize the most latest news from internet into 8 point wise plain text summary. 
                                             Create an image with the summary generated. 
                                             Upload that image to supabase.
                                             Use the supabase public url to upload the image to instagram.
