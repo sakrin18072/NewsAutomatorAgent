@@ -120,7 +120,8 @@ def upload_image_to_supabase(image_path: str):
 def fetch_news():
     """ Extracts latest Indian news from moneycontrol website and returns string of news content extracted"""
     try:
-        news_source = str(os.getenv("NEWS_SOURCE"))
+        news_sources = str(os.getenv('NEWS_SOURCES')).split('|')
+        news_source = random.choice(news_sources)
         loader = WebBaseLoader(news_source) 
         docs = loader.load()
         return docs[0].page_content
