@@ -121,7 +121,12 @@ def fetch_news():
     """ Extracts latest Indian news from moneycontrol website and returns string of news content extracted"""
     try:
         news_sources = str(os.getenv('NEWS_SOURCES')).split('|')
-        news_source = random.choice(news_sources)
+        with open('lastSource.txt','r') as f:
+            idx = int(f.read())
+        idx = (idx+1)%7
+        news_source = news_sources[idx]
+        with open('lastSource.txt','w') as f:
+            f.write(str(idx))
         loader = WebBaseLoader(news_source) 
         docs = loader.load()
         return docs[0].page_content
