@@ -63,7 +63,7 @@ def make_post_image(
         "#E1AFD1",
         "#A7D7C5",
         "#ADA2FF",
-        "#8E9775",
+        "#ECFAE5",
         "#FFE1FF",
     ]
     image_bg = random.choice(bg_colors)
