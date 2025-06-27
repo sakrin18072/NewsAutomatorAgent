@@ -114,6 +114,7 @@ def make_post_image(
     draw.text((780, y), "theNewsGuyBot", font=font, fill=text_color)
     draw.text((781, y + 1), "theNewsGuyBot", font=font, fill=text_color)
     draw.text((779, y - 1), "theNewsGuyBot", font=font, fill=text_color)
+    y += 1.5*line_height
     draw.text((padding, y), "Headlines", font=font, fill=text_color)
     draw.text((padding + 1, y + 1), "Headlines", font=font, fill=text_color)
     draw.text((padding - 1, y - 1), "Headlines", font=font, fill=text_color)
@@ -204,7 +205,7 @@ def create_container_for_post(image_url: str):
             "INSTAGRAM_ID and INSTAGRAM_ACCESS_TOKEN must be set in environment variables"
         )
 
-    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines \\n #BreakingNews #NewsUpdate #DailyNews #NewsAlert #InstaNews #NewsBot #AInews #AINewsBot #AutomatedNews #TechNews #IndiaNews #BharatNews #DeshKiKhabar #TrendingInIndia #IndianNews #DelhiNews #MumbaiNews #HyderabadNews #AIContent #AIAutomation #AIforGood #Langchain #GPTpowered #AIrevolution #AgenticAI #ViralReels #InstaDaily #ExplorePage #FYP #InstaBot #AutoPost #FutureOfNews #AIinMedia #SmartNews #NextGenMedia #AIJournalism %23news %23indiannews&access_token={instagram_access_token}"
+    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines \\n %23BreakingNews %23NewsUpdate %23DailyNews %23NewsAlert %23InstaNews %23NewsBot %23AInews %23AINewsBot %23AutomatedNews %23TechNews %23IndiaNews %23BharatNews %23DeshKiKhabar %23TrendingInIndia %23IndianNews %23DelhiNews %23MumbaiNews %23HyderabadNews %23AIContent %23AIAutomation %23AIforGood %23Langchain %23GPTpowered %23AIrevolution %23AgenticAI %23ViralReels %23InstaDaily %23ExplorePage %23FYP %23InstaBot %23AutoPost %23FutureOfNews %23AIinMedia %23SmartNews %23NextGenMedia %23AIJournalism %23news %23indiannews&access_token={instagram_access_token}"
     res = requests.post(url)
     data = res.json()
 
@@ -272,7 +273,7 @@ def journalist_agent(state: AgentState) -> AgentState:
     print(f"LLM Response: {response.content}")
     if hasattr(response, "tool_calls") and response.tool_calls:  # type:ignore
         print(
-            f"Tool calls: {[call['name'] for call in response.tool_calls]}"
+            f"Tool calls: {[call['name'] for call in response.tool_calls]}" #type:ignore
         )  # type:ignore
 
     return {"messages": [response]}
@@ -287,7 +288,7 @@ def should_go_to_tools(state: AgentState):
     last_message = messages[-1]
 
     if (
-        hasattr(last_message, "tool_calls") and len(last_message.tool_calls) > 0
+        hasattr(last_message, "tool_calls") and len(last_message.tool_calls) > 0 #type:ignore
     ):  # type:ignore
         return "continue"
     return "stop"
