@@ -51,12 +51,12 @@ def make_post_image(
         "#8FBC8B",
         "#FFF8DC",
         "#FFFFFF",
-        "#FFFAFA",
+        "#F0E68C",
         "#F0FFF0",
         "#F5FFFA",
         "#F0FFFF",
         "#F0F8FF",
-        "#F8F8FF",
+        "#DFFF00",
         "#F5F5F5",
         "#FFF0F5",
         "#FFE4E1",
@@ -90,9 +90,11 @@ def make_post_image(
         ]
         font_path = "fonts/" + random.choice(fonts)
         font = ImageFont.truetype(font_path, font_size)
+        headline_font = ImageFont.truetype(font_path,45)
     except OSError:
         print(f"Font {font_path} not found, using default font")
         font = ImageFont.load_default()
+        headline_font = ImageFont.load_default()
 
     dummy_img = Image.new("RGB", (1, 1))
     dummy_draw = ImageDraw.Draw(dummy_img)
@@ -114,12 +116,12 @@ def make_post_image(
     draw.text((780, y), "theNewsGuyBot", font=font, fill=text_color)
     draw.text((781, y + 1), "theNewsGuyBot", font=font, fill=text_color)
     draw.text((779, y - 1), "theNewsGuyBot", font=font, fill=text_color)
-    y += 1.5*line_height
-    draw.text((padding, y), "Headlines", font=font, fill=text_color)
-    draw.text((padding + 1, y + 1), "Headlines", font=font, fill=text_color)
-    draw.text((padding - 1, y - 1), "Headlines", font=font, fill=text_color)
+    y += 2*line_height
+    draw.text((padding, y), "Headlines", font=headline_font, fill=text_color)
+    draw.text((padding + 1, y + 1), "Headlines", font=headline_font, fill=text_color)
+    draw.text((padding - 1, y - 1), "Headlines", font=headline_font, fill=text_color)
 
-    y += 2 * line_height
+    y += 2.5 * line_height
     for line in lines:
         draw.text((padding, y), line, font=font, fill=text_color)
         y += line_height
