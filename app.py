@@ -123,7 +123,7 @@ def fetch_news():
         news_sources = str(os.getenv('NEWS_SOURCES')).split('|')
         with open('lastSource.txt','r') as f:
             idx = int(f.read())
-        idx = (idx+1)%7
+        idx = (idx+1)%9
         news_source = news_sources[idx]
         with open('lastSource.txt','w') as f:
             f.write(str(idx))
