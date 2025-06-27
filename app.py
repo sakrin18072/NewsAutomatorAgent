@@ -205,7 +205,7 @@ def create_container_for_post(image_url: str):
             "INSTAGRAM_ID and INSTAGRAM_ACCESS_TOKEN must be set in environment variables"
         )
 
-    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines \\n %23BreakingNews %23NewsUpdate %23DailyNews %23NewsAlert %23InstaNews %23NewsBot %23AInews %23AINewsBot %23AutomatedNews %23TechNews %23IndiaNews %23BharatNews %23DeshKiKhabar %23TrendingInIndia %23IndianNews %23DelhiNews %23MumbaiNews %23HyderabadNews %23AIContent %23AIAutomation %23AIforGood %23Langchain %23GPTpowered %23AIrevolution %23AgenticAI %23ViralReels %23InstaDaily %23ExplorePage %23FYP %23InstaBot %23AutoPost %23FutureOfNews %23AIinMedia %23SmartNews %23NextGenMedia %23AIJournalism %23news %23indiannews&access_token={instagram_access_token}"
+    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines \\n %23BreakingNews %23NewsUpdate %23DailyNews %23NewsAlert %23InstaNews %23NewsBot %23AInews %23AINewsBot %23AutomatedNews %23TechNews %23IndiaNews %23BharatNews %23DeshKiKhabar %23TrendingInIndia %23IndianNews %23DelhiNews %23MumbaiNews %23HyderabadNews %23AIContent %23AIAutomation %23AIforGood %23Langchain %23GPTpowered %23AIrevolution %23AgenticAI %23ViralReels %23InstaDaily %23ExplorePage %23FYP&access_token={instagram_access_token}"
     res = requests.post(url)
     data = res.json()
 
