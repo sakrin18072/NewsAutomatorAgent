@@ -28,7 +28,7 @@ class AgentState(TypedDict):
 def make_post_video(
     news_summary: str,
     font_path: str = "Lexend.ttf",
-    font_size: int = 30,
+    font_size: int = 40,
     text_color: str = "black",
     padding: int = 60,
     line_spacing: float = 1.5,
@@ -91,7 +91,7 @@ def make_post_video(
         ]
         font_path = "fonts/" + random.choice(fonts)
         font = ImageFont.truetype(font_path, font_size)
-        headline_font = ImageFont.truetype(font_path,45)
+        headline_font = ImageFont.truetype(font_path,50)
     except OSError:
         print(f"Font {font_path} not found, using default font")
         font = ImageFont.load_default()
