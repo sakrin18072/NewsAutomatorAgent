@@ -32,7 +32,7 @@ def make_post_video(
     text_color: str = "black",
     padding: int = 60,
     line_spacing: float = 1.5,
-    max_text_width: int = 1290,
+    max_text_width: int = 960,
     post_size: tuple = (1080, 1350),
 ):
     """
