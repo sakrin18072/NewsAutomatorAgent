@@ -32,7 +32,7 @@ def make_post_video(
     text_color: str = "black",
     padding: int = 60,
     line_spacing: float = 1.5,
-    max_text_width: int = 1080,
+    max_text_width: int = 1290,
     post_size: tuple = (1080, 1350),
 ):
     """
@@ -115,9 +115,9 @@ def make_post_video(
     line_height = int(base_line_height * line_spacing)
 
     y = padding - 30
-    draw.text((780, y), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((781, y + 1), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((779, y - 1), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((770, y), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((771, y + 1), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((769, y - 1), "theNewsGuyBot", font=font, fill=text_color)
     y += 2*line_height
     draw.text((padding, y), "Headlines", font=headline_font, fill=text_color)
     draw.text((padding + 1, y + 1), "Headlines", font=headline_font, fill=text_color)
