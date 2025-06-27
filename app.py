@@ -28,11 +28,11 @@ class AgentState(TypedDict):
 def make_post_video(
     news_summary: str,
     font_path: str = "Lexend.ttf",
-    font_size: int = 40,
+    font_size: int = 30,
     text_color: str = "black",
     padding: int = 60,
     line_spacing: float = 1.5,
-    max_text_width: int = 960,
+    max_text_width: int = 1020,
     post_size: tuple = (1080, 1350),
 ):
     """
