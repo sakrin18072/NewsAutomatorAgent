@@ -15,6 +15,7 @@ import requests
 from langchain_groq import ChatGroq
 import random
 from moviepy import AudioFileClip, ImageClip
+import time
 
 load_dotenv()
 
@@ -223,6 +224,19 @@ def create_container_for_post(video_url: str):
 
     if "id" not in data:
         raise KeyError(f"Instagram API error: {data}")
+    
+    graph_url = "https://graph.instagram.com/v23.0/"
+    def status_of_upload(ig_container_id = data['id'],access_token=instagram_access_token):
+        url = graph_url + ig_container_id
+        param = {}
+        param['access_token'] = access_token
+        param['fields'] = 'status_code'
+        response = requests.get(url,params=param)
+        response = response.json()
+        return response
+    
+    while(status_of_upload()['status_code']=="IN_PROGRESS"):
+        time.sleep(5)
 
     return data["id"]
 
