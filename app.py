@@ -83,7 +83,6 @@ def make_post_video(
             "SourceSans3.ttf",
             "AbrilFatFace.ttf",
             "Alata.ttf",
-            "AmaticSC.ttf",
             "MontserratAlternates.ttf",
             "Righteous.ttf",
             "Rowdies.ttf",
