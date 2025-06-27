@@ -14,6 +14,7 @@ import os
 import requests
 from langchain_groq import ChatGroq
 import random
+from moviepy import AudioFileClip, ImageClip
 
 load_dotenv()
 
@@ -23,7 +24,7 @@ class AgentState(TypedDict):
 
 
 @tool
-def make_post_image(
+def make_post_video(
     news_summary: str,
     font_path: str = "Lexend.ttf",
     font_size: int = 30,
@@ -34,12 +35,12 @@ def make_post_image(
     post_size: tuple = (1080, 1350),
 ):
     """
-    Helps in creating an image to post on instagram by passing the text in the post
+    Helps in creating a video to post on instagram by passing the text in the post
     Args:
         news_summary: summary of latest news obtained
 
     Returns:
-        Path to created image
+        Path to created video
     """
     bg_colors = [
         "#F04A00",
@@ -128,17 +129,25 @@ def make_post_image(
     image_path = os.path.abspath("insta_text_post.png")
     img.save(image_path)
     print(f"Image saved at: {image_path}")
-
-    return image_path
+    audio_files = ['1.mp3','2.mp3','3.mp3','4.mp3','5.mp3','6.mp3','7.mp3','8.mp3','9.mp3']
+    audio_path = 'audio/' + random.choice(audio_files)
+    video_path = "insta_text_post.mp4"
+    audio_clip = AudioFileClip(audio_path).subclipped(0,8)
+    img_clip = ImageClip(image_path,duration=8)
+    img_clip.audio = audio_clip
+    img_clip.write_videofile(video_path,fps=30,codec='libx264',audio_codec="aac")
+    print(f"Video saved at: {video_path}")
+    os.remove(image_path)
+    return os.path.abspath(video_path)
 
 
 @tool
-def upload_image_to_supabase(image_path: str):
-    """Uploads image to supabase bucket instagram-posts as image.png
+def upload_video_to_supabase(video_path: str):
+    """Uploads video to supabase bucket instagram-posts as video.mp4
     Args:
-        image_path: Image path in local directory
+        video_path: Video path in local directory
     returns:
-        public_url: url of uploaded image
+        public_url: url of uploaded video
 
     """
     url = os.getenv("SUPABASE_URL")
@@ -153,28 +162,28 @@ def upload_image_to_supabase(image_path: str):
 
     bucket_name = "instagram-posts"
 
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(f"Image file not found at path: {image_path}")
+    if not os.path.exists(video_path):
+        raise FileNotFoundError(f"Image file not found at path: {video_path}")
 
-    with open(image_path, "rb") as f:
+    with open(video_path, "rb") as f:
         file_data = f.read()
 
     try:
         result = supabase.storage.from_(bucket_name).upload(
-            "image.png", file_data, {"upsert": "true"}
+            "video.mp4", file_data, {"upsert": "true"}
         )
         print(f"Upload result: {result}")
     except Exception as e:
         print(f"Upload error: {e}")
         raise e
 
-    public_url = supabase.storage.from_(bucket_name).get_public_url("image.png")
+    public_url = supabase.storage.from_(bucket_name).get_public_url("video.mp4")
 
     try:
-        os.remove(image_path)
-        print(f"Local file removed: {image_path}")
+        os.remove(video_path)
+        print(f"Local file removed: {video_path}")
     except OSError as e:
-        print(f"Warning: Could not remove local file {image_path}: {e}")
+        print(f"Warning: Could not remove local file {video_path}: {e}")
 
     return public_url.strip("?")
 
@@ -199,7 +208,7 @@ def fetch_news():
         raise e
 
 
-def create_container_for_post(image_url: str):
+def create_container_for_post(video_url: str):
     instagram_id = os.getenv("INSTAGRAM_ID")
     instagram_access_token = os.getenv("INSTAGRAM_ACCESS_TOKEN")
 
@@ -208,7 +217,7 @@ def create_container_for_post(image_url: str):
             "INSTAGRAM_ID and INSTAGRAM_ACCESS_TOKEN must be set in environment variables"
         )
 
-    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?image_url={image_url}&is_carousel_item=FALSE&caption=Headlines \\n %23BreakingNews %23NewsUpdate %23DailyNews %23NewsAlert %23InstaNews %23NewsBot %23AInews %23AINewsBot %23AutomatedNews %23TechNews %23IndiaNews %23BharatNews %23DeshKiKhabar %23TrendingInIndia %23IndianNews %23DelhiNews %23MumbaiNews %23HyderabadNews %23AIContent %23AIAutomation %23AIforGood %23Langchain %23GPTpowered %23AIrevolution %23AgenticAI %23ViralReels %23InstaDaily %23ExplorePage %23FYP&access_token={instagram_access_token}"
+    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?media_type=REELS&video_url={video_url}&share_to_feed=TRUE&caption=Headlines %23BreakingNews %23NewsUpdate %23DailyNews %23NewsAlert %23InstaNews %23NewsBot %23AInews %23AINewsBot %23AutomatedNews %23TechNews %23IndiaNews %23BharatNews %23DeshKiKhabar %23TrendingInIndia %23IndianNews %23DelhiNews %23MumbaiNews %23HyderabadNews %23AIContent %23AIAutomation %23AIforGood %23Langchain %23GPTpowered %23AIrevolution %23AgenticAI %23ViralReels %23InstaDaily %23ExplorePage %23FYP&access_token={instagram_access_token}"
     res = requests.post(url)
     data = res.json()
 
@@ -219,15 +228,15 @@ def create_container_for_post(image_url: str):
 
 
 @tool
-def create_instagram_post(supabase_image_url: str):
+def create_instagram_post(supabase_video_url: str):
     """Creates an instagram post
     Args:
-        supabase_image_url: public URL of image in supabase
+        supabase_video_url: public URL of video in supabase
     returns:
         id: id of uploaded post
     """
     try:
-        creation_id = create_container_for_post(supabase_image_url)
+        creation_id = create_container_for_post(supabase_video_url)
         instagram_id = os.getenv("INSTAGRAM_ID")
         instagram_access_token = os.getenv("INSTAGRAM_ACCESS_TOKEN")
 
@@ -244,7 +253,7 @@ def create_instagram_post(supabase_image_url: str):
         raise e
 
 
-tools = [fetch_news, make_post_image, upload_image_to_supabase, create_instagram_post]
+tools = [fetch_news, make_post_video, upload_video_to_supabase, create_instagram_post]
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")  # type:ignore
 llm = ChatGroq(model="meta-llama/llama-4-maverick-17b-128e-instruct").bind_tools(
     tools=tools
@@ -257,15 +266,15 @@ def journalist_agent(state: AgentState) -> AgentState:
     You are a journalist who posts news on instagram. You must call tools one at a time in the correct sequence:
     1. First call fetch_news() to get the latest news
     2. Then analyze the news and create a 8 point plain text summary in genZ slang
-    3. Call make_post_image() with the actual summary text
-    4. Call upload_image_to_supabase() with the actual image path returned from make_post_image
-    5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_image_to_supabase
+    3. Call make_post_video() with the actual summary text
+    4. Call upload_video_to_supabase() with the actual video path returned from make_post_video
+    5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_video_to_supabase
     
     Never call multiple tools at once. Wait for each tool's response before proceeding to the next step.
     Always use the actual return values from previous tools, not placeholder text.
     
-    If you have already fetched news, proceed to create a summary and call make_post_image.
-    If you have created an image, proceed to upload it to supabase.
+    If you have already fetched news, proceed to create a summary and call make_post_video.
+    If you have created a video, proceed to upload it to supabase.
     If you have uploaded to supabase, proceed to create the instagram post.
     Continue until all steps are complete.
     """
@@ -321,9 +330,9 @@ def run_agent():
                 "messages": [
                     HumanMessage(
                         content="""Summarize the most latest news from internet into 8 point wise plain text summary in genZ slang. 
-                                            Create an image with the summary generated. 
-                                            Upload that image to supabase.
-                                            Use the supabase public url to upload the image to instagram.
+                                            Create a video with the summary generated. 
+                                            Upload that video to supabase.
+                                            Use the supabase public url to upload the video to instagram.
                                             Use all the relevant tools available with you. Follow the steps one by one."""
                     )
                 ]
