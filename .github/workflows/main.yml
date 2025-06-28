@@ -31,4 +31,7 @@ jobs:
         INSTAGRAM_ID: ${{ secrets.INSTAGRAM_ID }}
         INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
         NEWS_SOURCES: ${{ secrets.NEWS_SOURCES }}
+        YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+        YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+        YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
       run: python app.py
