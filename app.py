@@ -20,6 +20,8 @@ import google.auth.transport.requests
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 load_dotenv()
 
@@ -121,10 +123,12 @@ def make_post_video(
         font_path = "fonts/" + random.choice(fonts)
         font = ImageFont.truetype(font_path, font_size)
         headline_font = ImageFont.truetype(font_path,45)
+        date_font = ImageFont.truetype(font_path,25)
     except OSError:
         print(f"Font {font_path} not found, using default font")
         font = ImageFont.load_default()
         headline_font = ImageFont.load_default()
+        date_font = ImageFont.load_default()
 
     dummy_img = Image.new("RGB", (1, 1))
     dummy_draw = ImageDraw.Draw(dummy_img)
@@ -146,10 +150,16 @@ def make_post_video(
     draw.text((770, y), "theNewsGuyBot", font=font, fill=text_color)
     draw.text((771, y + 1), "theNewsGuyBot", font=font, fill=text_color)
     draw.text((769, y - 1), "theNewsGuyBot", font=font, fill=text_color)
-    y += 2*line_height
-    draw.text((padding, y), "Headlines", font=headline_font, fill=text_color)
-    draw.text((padding + 1, y + 1), "Headlines", font=headline_font, fill=text_color)
-    draw.text((padding - 1, y - 1), "Headlines", font=headline_font, fill=text_color)
+    dateString = '/'.join(reversed(str(datetime.now(ZoneInfo('Asia/Kolkata')).date()).split('-')))
+    timeString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%I:%M %p')) + " IST"
+    dayString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime("%A"))
+    draw.text((770, y+line_height),dateString , font=date_font, fill=text_color)
+    
+    draw.text((770, y+1.8*line_height),timeString , font=date_font, fill=text_color)
+    y += line_height
+    draw.text((padding, y),dayString+ " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding + 1, y + 1),dayString + " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding - 1, y - 1),dayString + " Headlines", font=headline_font, fill=text_color)
 
     y += 2.5 * line_height
     for line in lines:
