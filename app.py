@@ -178,7 +178,7 @@ def upload_video_to_supabase(video_path: str):
 
 @tool
 def fetch_news():
-    """Extracts latest Indian news from moneycontrol website and returns string of news content extracted"""
+    """Extracts latest Indian news from news sources and returns string of news content extracted"""
     try:
         news_sources = str(os.getenv("NEWS_SOURCES")).split("|")
         url = os.getenv("SUPABASE_URL")
