@@ -168,7 +168,7 @@ def make_post_video(
     image_path = os.path.abspath("insta_text_post.png")
     img.save(image_path)
     print(f"Image saved at: {image_path}")
-    audio_files = ['1.mp3','2.mp3','3.mp3','4.mp3','5.mp3','6.mp3','7.mp3','8.mp3','9.mp3']
+    audio_files = ['1.mp3','2.mp3','3.mp3','4.mp3','5.mp3','6.mp3','7.mp3','8.mp3','9.mp3','10.mp3','11.mp3','12.mp3','13.mp3','14.mp3','15.mp3','16.mp3','17.mp3','18.mp3','19.mp3','20.mp3']
     audio_path = 'audio/' + random.choice(audio_files)
     video_path = "insta_text_post.mp4"
     audio_clip = AudioFileClip(audio_path).subclipped(0,8)
