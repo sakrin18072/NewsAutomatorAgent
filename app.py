@@ -232,11 +232,16 @@ def make_post_video(
     img_clip.write_videofile(video_path,fps=30,codec='libx264',audio_codec="aac")
     print(f"Video saved at: {video_path}")
     os.remove(image_path)
-    print("Uploading video to youtube...")
-    try:
-        upload_youtube_video(os.path.abspath(video_path))
-    except:
-        print("Youtube upload failed")
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_ANON_KEY")
+    supabase = create_client(url,key) #type:ignore
+    idx = supabase.from_('NewsSourceCounter').select("counter").execute().data[0]['counter']
+    if idx%2==0:    
+        print("Uploading video to youtube...")
+        try:
+            upload_youtube_video(os.path.abspath(video_path))
+        except:
+            print("Youtube upload failed")
     return os.path.abspath(video_path)
 
 
@@ -367,7 +372,7 @@ def create_instagram_post(supabase_video_url: str):
 
 tools = [fetch_news, make_post_video, upload_video_to_supabase, create_instagram_post]
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")  # type:ignore
-llm = ChatGroq(model="meta-llama/llama-4-scout-17b-16e-instruct").bind_tools(
+llm = ChatGroq(model="meta-llama/llama-4-maverick-17b-128e-instruct").bind_tools(
     tools=tools
 )
 
