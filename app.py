@@ -364,7 +364,7 @@ def create_instagram_post(supabase_video_url: str):
 
 tools = [fetch_news, make_post_video, upload_video_to_supabase, create_instagram_post]
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")  # type:ignore
-llm = ChatGroq(model="meta-llama/llama-4-maverick-17b-128e-instruct").bind_tools(
+llm = ChatGroq(model="meta-llama/llama-4-scout-17b-16e-instruct").bind_tools(
     tools=tools
 )
 
