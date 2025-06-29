@@ -4,7 +4,7 @@ from langchain_core.messages import BaseMessage, HumanMessage
 from typing import Annotated, Sequence, TypedDict
 from langgraph.graph.message import add_messages
 from langchain_core.tools import tool
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import textwrap
 from supabase import create_client
 from langchain_community.document_loaders import WebBaseLoader
@@ -22,6 +22,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from datetime import datetime
 from zoneinfo import ZoneInfo
+import numpy as np
 
 load_dotenv()
 
@@ -114,6 +115,60 @@ def make_post_video(
     image_bg = random.choice(bg_colors)
     img = Image.new("RGB", post_size, color=image_bg)
     draw = ImageDraw.Draw(img)
+    
+    noise = np.random.randint(0, 256, (post_size[1], post_size[0], 3), dtype='uint8')
+    noise_img = Image.fromarray(noise, mode='RGB')
+    img = Image.blend(img, noise_img, alpha=0.275)
+    
+    spotlight = Image.new("L", post_size, 0)
+    draw = ImageDraw.Draw(spotlight)
+    
+    margin_x = int(post_size[0] * 0.15)
+    margin_y = int(post_size[1] * 0.15)
+    
+    width = 1080
+    height = 1350
+    
+    possible_spots = [
+        (random.randint(margin_x, width // 2), random.randint(margin_y, height // 2)), 
+        (random.randint(width // 2, width - margin_x), random.randint(margin_y, height // 2)), 
+        (random.randint(margin_x, width // 2), random.randint(height // 2, height - margin_y)), 
+        (random.randint(width // 2, width - margin_x), random.randint(height // 2, height - margin_y)), 
+    ]
+    
+    spot_x, spot_y = random.choice(possible_spots)
+    max_radius = int(min(width, height) * 0.4)
+    draw.ellipse((spot_x - max_radius, spot_y - max_radius, spot_x + max_radius, spot_y + max_radius), fill=255)
+
+    spotlight = spotlight.filter(ImageFilter.GaussianBlur(radius=100))
+    
+    spotlight_rgb = Image.merge("RGB", (spotlight, spotlight, spotlight))
+    img = Image.blend(img, spotlight_rgb, alpha=0.35)
+    box_coords = (30,40,1050,190)
+    x0, y0, x1, y1 = box_coords
+    box_width, box_height = x1 - x0, y1 - y0
+    
+    cropped = img.crop(box_coords).filter(ImageFilter.GaussianBlur(30))
+    
+    overlay = Image.new("RGBA", (box_width, box_height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
+    draw.rounded_rectangle(
+        [(0, 0), (box_width, box_height)],
+        radius=20,
+        fill=(255, 255, 255, 15)
+    )
+    
+    glass_region = Image.alpha_composite(cropped.convert("RGBA"), overlay.convert("RGBA"))
+    mask = Image.new("L", (box_width, box_height), 0)
+    mask_draw = ImageDraw.Draw(mask)
+    mask_draw.rounded_rectangle(
+        [(0, 0), (box_width, box_height)],
+        radius=20,
+        fill=255
+    )
+    img.paste(glass_region, (x0, y0), mask)
+    draw = ImageDraw.Draw(img)
+    
     points = news_summary.split("\n")
 
     try:
@@ -146,22 +201,22 @@ def make_post_video(
     base_line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
     line_height = int(base_line_height * line_spacing)
 
-    y = padding - 30
-    draw.text((770, y), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((771, y + 1), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((769, y - 1), "theNewsGuyBot", font=font, fill=text_color)
+    y = padding
+    draw.text((780, y), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((781, y + 1), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((779, y - 1), "theNewsGuyBot", font=font, fill=text_color)
     dateString = '/'.join(reversed(str(datetime.now(ZoneInfo('Asia/Kolkata')).date()).split('-')))
     timeString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%I:%M %p')) + " IST"
     dayString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime("%A"))
-    draw.text((770, y+line_height),dateString , font=date_font, fill=text_color)
+    draw.text((780, y+1.2*line_height),dateString , font=date_font, fill=text_color)
     
-    draw.text((770, y+1.8*line_height),timeString , font=date_font, fill=text_color)
+    draw.text((780, y+2.2*line_height),timeString , font=date_font, fill=text_color)
     y += line_height
-    draw.text((padding, y),dayString+ " Headlines", font=headline_font, fill=text_color)
-    draw.text((padding + 1, y + 1),dayString + " Headlines", font=headline_font, fill=text_color)
-    draw.text((padding - 1, y - 1),dayString + " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding, y-10),dayString+ " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding + 1, y + 1-10),dayString + " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding - 1, y - 1-10),dayString + " Headlines", font=headline_font, fill=text_color)
 
-    y += 2.5 * line_height
+    y += 4 * line_height
     for line in lines:
         draw.text((padding, y), line, font=font, fill=text_color)
         y += line_height
