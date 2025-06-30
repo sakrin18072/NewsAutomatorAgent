@@ -72,7 +72,7 @@ def upload_youtube_video(file_path):
 def make_post_video(
     news_summary: str,
     font_path: str = "Lexend.ttf",
-    font_size: int = 40,
+    font_size: int = 35,
     text_color: str = "black",
     padding: int = 60,
     line_spacing: float = 1.5,
@@ -201,22 +201,22 @@ def make_post_video(
     base_line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
     line_height = int(base_line_height * line_spacing)
 
-    y = padding-8
-    draw.text((720, y), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((721, y + 1), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((719, y - 1), "theNewsGuyBot", font=font, fill=text_color)
+    y = padding-10
+    draw.text((760, y), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((761, y + 1), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((759, y - 1), "theNewsGuyBot", font=font, fill=text_color)
     dateString = '/'.join(reversed(str(datetime.now(ZoneInfo('Asia/Kolkata')).date()).split('-')))
     timeString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%I:%M %p')) + " IST"
     dayString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime("%A"))
-    draw.text((720, y+1.2*line_height),dateString , font=date_font, fill=text_color)
+    draw.text((760, y+1.2*line_height),dateString , font=date_font, fill=text_color)
     
-    draw.text((720, y+2*line_height),timeString , font=date_font, fill=text_color)
+    draw.text((760, y+2.2*line_height),timeString , font=date_font, fill=text_color)
     y += line_height
-    draw.text((padding, y-13),dayString+ " Headlines", font=headline_font, fill=text_color)
-    draw.text((padding + 1, y + 1-13),dayString + " Headlines", font=headline_font, fill=text_color)
-    draw.text((padding - 1, y - 1-13),dayString + " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding, y-8),dayString+ " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding + 1, y + 1-8),dayString + " Headlines", font=headline_font, fill=text_color)
+    draw.text((padding - 1, y - 1-8),dayString + " Headlines", font=headline_font, fill=text_color)
 
-    y += 3 * line_height
+    y += 4 * line_height
     for line in lines:
         draw.text((padding, y), line, font=font, fill=text_color)
         y += line_height
@@ -388,7 +388,7 @@ def journalist_agent(state: AgentState) -> AgentState:
         content="""
     You are a journalist who posts news on instagram. You must call tools one at a time in the correct sequence:
     1. First call fetch_news() to get the latest news
-    2. Then analyze the news and create a 3 point plain text summary where each point must be self explanatory with reader understandability
+    2. Then analyze the news and create a 4 point plain text summary where each point must be self explanatory with reader understandability
     3. Call make_post_video() with the actual summary text
     4. Call upload_video_to_supabase() with the actual video path returned from make_post_video
     5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_video_to_supabase
@@ -452,7 +452,7 @@ def run_agent():
             {
                 "messages": [
                     HumanMessage(
-                        content="""Summarize the most latest news from internet into 3 point wise plain text summary where each point must be self explanatory with reader understandability. 
+                        content="""Summarize the most latest news from internet into 4 point wise plain text summary where each point must be self explanatory with reader understandability. 
                                             Create a video with the summary generated. 
                                             Upload that video to supabase.
                                             Use the supabase public url to upload the video to instagram.
