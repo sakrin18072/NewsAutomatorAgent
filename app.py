@@ -388,7 +388,7 @@ def journalist_agent(state: AgentState) -> AgentState:
         content="""
     You are a journalist who posts news on instagram. You must call tools one at a time in the correct sequence:
     1. First call fetch_news() to get the latest news
-    2. Then analyze the news and create a 5 point plain text summary where each point must be self explanatory with reader understandability
+    2. Then analyze the news and create a 4 point plain text summary where each point must be self explanatory with reader understandability
     3. Call make_post_video() with the actual summary text
     4. Call upload_video_to_supabase() with the actual video path returned from make_post_video
     5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_video_to_supabase
@@ -452,7 +452,7 @@ def run_agent():
             {
                 "messages": [
                     HumanMessage(
-                        content="""Summarize the most latest news from internet into 5 point wise plain text summary where each point must be self explanatory with reader understandability. 
+                        content="""Summarize the most latest news from internet into 4 point wise plain text summary where each point must be self explanatory with reader understandability. 
                                             Create a video with the summary generated. 
                                             Upload that video to supabase.
                                             Use the supabase public url to upload the video to instagram.
