@@ -88,20 +88,12 @@ def make_post_video(
         Path to created video
     """
     bg_colors = [
-        "#F04A00",
         "#F6DE16",
-        "#5E5CB2",
         "#94D2BD",
         "#E9D8A6",
-        "#BDB76B",
         "#8FBC8B",
         "#FFF8DC",
-        "#FFFFFF",
         "#F0E68C",
-        "#F0FFF0",
-        "#F5FFFA",
-        "#F0FFFF",
-        "#F0F8FF",
         "#DFFF00",
         "#F5F5F5",
         "#FFF0F5",
@@ -111,6 +103,14 @@ def make_post_video(
         "#ADA2FF",
         "#ECFAE5",
         "#FFE1FF",
+        "#8AAAE5",
+        "#97BC62",
+        "#A7BEAE",
+        "#D3C5E5",
+        "#66A5AD",
+        "#EDF4F2",
+        "#F1D3B2",
+        "#E0B0FF"
     ]
     image_bg = random.choice(bg_colors)
     img = Image.new("RGB", post_size, color=image_bg)
