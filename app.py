@@ -72,7 +72,7 @@ def upload_youtube_video(file_path):
 def make_post_video(
     news_summary: str,
     font_path: str = "Lexend.ttf",
-    font_size: int = 35,
+    font_size: int = 30,
     text_color: str = "black",
     padding: int = 60,
     line_spacing: float = 1.5,
@@ -202,15 +202,15 @@ def make_post_video(
     line_height = int(base_line_height * line_spacing)
 
     y = padding
-    draw.text((775, y), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((776, y + 1), "theNewsGuyBot", font=font, fill=text_color)
-    draw.text((774, y - 1), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((790, y), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((791, y + 1), "theNewsGuyBot", font=font, fill=text_color)
+    draw.text((789, y - 1), "theNewsGuyBot", font=font, fill=text_color)
     dateString = '/'.join(reversed(str(datetime.now(ZoneInfo('Asia/Kolkata')).date()).split('-')))
     timeString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%I:%M %p')) + " IST"
     dayString = str(datetime.now(ZoneInfo('Asia/Kolkata')).strftime("%A"))
-    draw.text((775, y+1.2*line_height),dateString , font=date_font, fill=text_color)
+    draw.text((790, y+1.2*line_height),dateString , font=date_font, fill=text_color)
     
-    draw.text((775, y+2.2*line_height),timeString , font=date_font, fill=text_color)
+    draw.text((790, y+2.2*line_height),timeString , font=date_font, fill=text_color)
     y += line_height
     draw.text((padding, y-10),dayString+ " Headlines", font=headline_font, fill=text_color)
     draw.text((padding + 1, y + 1-10),dayString + " Headlines", font=headline_font, fill=text_color)
@@ -220,6 +220,12 @@ def make_post_video(
     for line in lines:
         draw.text((padding, y), line, font=font, fill=text_color)
         y += line_height
+    disclaimer = "Disclaimer: All posts on this page are generated and published by an AI agent. While we strive for accuracy, please verify important information through reliable sources. No human edits or reviews are applied."
+    lines = textwrap.wrap(disclaimer,width=100)
+    y=1270
+    for line in lines:
+        draw.text((padding,y),line, font=ImageFont.truetype(font_path,20),fill=text_color)
+        y+=20
     image_path = os.path.abspath("insta_text_post.png")
     img.save(image_path)
     print(f"Image saved at: {image_path}")
