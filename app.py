@@ -388,10 +388,11 @@ def journalist_agent(state: AgentState) -> AgentState:
         content="""
     You are a journalist who posts news on instagram. You must call tools one at a time in the correct sequence:
     1. First call fetch_news() to get the latest news
-    2. Then analyze the news and create a 4 point plain text summary where each point must be self explanatory with reader understandability
-    3. Call make_post_video() with the actual summary text
-    4. Call upload_video_to_supabase() with the actual video path returned from make_post_video
-    5. Finally call create_instagram_post() with the actual Supabase URL returned from upload_video_to_supabase
+    2. If you were not able to fetch any news then just stop execution else go to next step
+    3. Then analyze the news and create a 4 point plain text summary where each point must be self explanatory with reader understandability
+    4. Call make_post_video() with the actual summary text
+    5. Call upload_video_to_supabase() with the actual video path returned from make_post_video
+    6. Finally call create_instagram_post() with the actual Supabase URL returned from upload_video_to_supabase
     
     Never call multiple tools at once. Wait for each tool's response before proceeding to the next step.
     Always use the actual return values from previous tools, not placeholder text.
