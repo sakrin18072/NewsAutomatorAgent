@@ -327,7 +327,7 @@ def create_container_for_post(video_url: str):
             "INSTAGRAM_ID and INSTAGRAM_ACCESS_TOKEN must be set in environment variables"
         )
 
-    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?media_type=REELS&video_url={video_url}&share_to_feed=TRUE&caption=Headlines ( BreakingNews NewsUpdate DailyNews NewsAlert InstaNews NewsBot AInews AINewsBot AutomatedNews TechNews IndiaNews BharatNews DeshKiKhabar TrendingInIndia IndianNews DelhiNews MumbaiNews HyderabadNews AIContent AIAutomation AIforGood Langchain GPTpowered AIrevolution AgenticAI ViralReels InstaDaily ExplorePage FYP )&access_token={instagram_access_token}"
+    url = f"https://graph.instagram.com/v23.0/{instagram_id}/media?media_type=REELS&video_url={video_url}&share_to_feed=TRUE&caption=Headlines ..... ( BreakingNews NewsUpdate DailyNews NewsAlert InstaNews NewsBot AInews AINewsBot AutomatedNews TechNews IndiaNews BharatNews DeshKiKhabar TrendingInIndia IndianNews DelhiNews MumbaiNews HyderabadNews AIContent AIAutomation AIforGood Langchain GPTpowered AIrevolution AgenticAI ViralReels InstaDaily ExplorePage FYP )&access_token={instagram_access_token}"
     res = requests.post(url)
     data = res.json()
 
