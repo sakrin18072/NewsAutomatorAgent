@@ -242,7 +242,7 @@ def make_post_video(
     key = os.getenv("SUPABASE_ANON_KEY")
     supabase = create_client(url,key) #type:ignore
     idx = supabase.from_('NewsSourceCounter').select("counter").execute().data[0]['counter']
-    if idx%4==0:    
+    if idx%2==0:    
         print("Uploading video to youtube...")
         try:
             upload_youtube_video(os.path.abspath(video_path))
