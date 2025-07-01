@@ -307,7 +307,7 @@ def fetch_news():
         key = os.getenv("SUPABASE_ANON_KEY")
         supabase = create_client(url,key) #type:ignore
         idx = supabase.from_('NewsSourceCounter').select("counter").execute().data[0]['counter']
-        idx = (idx + 1) % 10
+        idx = (idx + 1) % 8
         news_source = news_sources[idx]
         supabase.from_("NewsSourceCounter").update({"counter":idx}).eq("id",1).execute()
         loader = WebBaseLoader(news_source)
