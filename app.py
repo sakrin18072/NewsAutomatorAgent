@@ -143,7 +143,7 @@ def make_post_video(
     spotlight = spotlight.filter(ImageFilter.GaussianBlur(radius=100))
     
     spotlight_rgb = Image.merge("RGB", (spotlight, spotlight, spotlight))
-    img = Image.blend(img, spotlight_rgb, alpha=0.35)
+    img = Image.blend(img, spotlight_rgb, alpha=0.15)
     box_coords = (30,40,1050,190)
     x0, y0, x1, y1 = box_coords
     box_width, box_height = x1 - x0, y1 - y0
