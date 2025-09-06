@@ -401,6 +401,7 @@ def journalist_agent(state: AgentState) -> AgentState:
     If you have created a video, proceed to upload it to supabase.
     If you have uploaded to supabase, proceed to create the instagram post.
     Continue until all steps are complete.
+    CRITICAL: In the 4 point summary, each point must be seperated by newline character
     """
     )
 
