@@ -454,7 +454,7 @@ def run_agent():
             {
                 "messages": [
                     HumanMessage(
-                        content="""Summarize the most latest news from internet into 4 point wise plain text summary where each point must be self explanatory with reader understandability. 
+                        content="""Summarize the most latest news from internet into 4 point wise plain text summary within 30 words where each point must be self explanatory with reader understandability. 
                                             Create a video with the summary generated. 
                                             Upload that video to supabase.
                                             Use the supabase public url to upload the video to instagram.
