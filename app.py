@@ -401,7 +401,9 @@ def journalist_agent(state: AgentState) -> AgentState:
     If you have created a video, proceed to upload it to supabase.
     If you have uploaded to supabase, proceed to create the instagram post.
     Continue until all steps are complete.
-    CRITICAL: In the 4 point summary, each point must be seperated by newline character
+    CRITICAL: In the 4 point summary, each point must be seperated by newline character and start with a number becoming a list of news.
+
+- You should Not return a markdown, it should be plain text with numbers indicating start of line and newline character between each line
     """
     )
 
@@ -454,11 +456,14 @@ def run_agent():
             {
                 "messages": [
                     HumanMessage(
-                        content="""Summarize the most latest news from internet into 4 point wise plain text summary within 30 words where each point must be self explanatory with reader understandability. 
+                        content="""Summarize the most latest news from internet into 4 point wise plain text summary within 60 words where each point must be self explanatory with reader understandability. 
                                             Create a video with the summary generated. 
                                             Upload that video to supabase.
                                             Use the supabase public url to upload the video to instagram.
-                                            Use all the relevant tools available with you. Follow the steps one by one."""
+                                            Use all the relevant tools available with you. Follow the steps one by one.
+
+do NOT give markdown, give plain text separated by newlines and number indicating start of point.
+"""
                     )
                 ]
             }
